@@ -49,6 +49,12 @@ def main():
         print(f"Error: Raw data file not found at {raw_data_path}")
         sys.exit(1)
 
+    # --- NEW STEP: Remove Duplicate Sections ---
+    print(f"Original record count: {len(df)}")
+    df.drop_duplicates(subset=['Section'], keep='first', inplace=True)
+    print(f"Record count after removing duplicates: {len(df)}")
+
+
     # --- 2. Clean and Preprocess ---
     print("Applying text cleaning and preprocessing...")
     # Apply cleaning to the 'Description' column
