@@ -1,5 +1,3 @@
-# scripts/preprocess_data.py
-
 import pandas as pd
 import os
 import re
@@ -17,25 +15,19 @@ def clean_text(text):
     if not isinstance(text, str):
         return "" # Return empty string for non-string types (like NaN)
     
-    # 1. Convert to Lowercase
+    
     text = text.lower()
-    
-    # 2. Remove Punctuation (keeps alphanumeric chars and spaces)
     text = re.sub(r'[^\w\s]', '', text)
-    
-    # 3. Remove Newlines
     text = text.replace('\n', ' ')
-    
-    # 4. Strip Extra Whitespace
     text = " ".join(text.split())
-    
     return text
 
 def main():
     """
     Main function to preprocess the raw data and generate the JSON corpus.
     """
-    # --- 1. Load Data ---
+
+    #Importing Paths.
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
     raw_data_path = os.path.join(project_root, 'data', 'raw', 'ipc_sections.csv')
@@ -49,39 +41,30 @@ def main():
         print(f"Error: Raw data file not found at {raw_data_path}")
         sys.exit(1)
 
-    # --- NEW STEP: Remove Duplicate Sections ---
+    # NEW STEP: Remove Duplicate Sections ---
     print(f"Original record count: {len(df)}")
     df.drop_duplicates(subset=['Section'], keep='first', inplace=True)
     print(f"Record count after removing duplicates: {len(df)}")
 
 
-    # --- 2. Clean and Preprocess ---
     print("Applying text cleaning and preprocessing...")
-    # Apply cleaning to the 'Description' column
     df['cleaned_description'] = df['Description'].apply(clean_text)
     
-    # Also clean Offense and Punishment columns before combining
     df['Offense'] = df['Offense'].apply(clean_text)
     df['Punishment'] = df['Punishment'].apply(clean_text)
 
-    # --- 3. Combine into a Corpus ---
     print("Combining text fields to create the corpus...")
-    # Combine the cleaned text fields into a single 'corpus_text'
     df['corpus_text'] = df['cleaned_description'] + " " + df['Offense'] + " " + df['Punishment']
-    
-    # --- 4. Structure the final JSON output ---
+
     print("Structuring data for JSON output...")
-    # Create a new dataframe in the desired format
+  
     corpus_df = pd.DataFrame({
         'id': df['Section'],
         'text': df['corpus_text']
     })
 
-    # Convert dataframe to a list of dictionaries
     corpus_list = corpus_df.to_dict(orient='records')
 
-    # --- 5. Save the Processed Corpus ---
-    # Ensure the 'processed' directory exists
     os.makedirs(processed_data_path, exist_ok=True)
     
     print(f"Saving processed corpus to: {output_json_path}")
