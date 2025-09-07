@@ -1,1 +1,75 @@
-.enev
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.log
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+env/
+*.env
+
+# IDEs & Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Data folders
+data/raw/
+data/processed/
+data_stores/
+
+# Model checkpoints and outputs
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.h5
+*.joblib
+*.pkl
+*.sav
+
+# Experiment logs and outputs
+logs/
+wandb/
+mlruns/
+tensorboard/
+lightning_logs/
+
+# Output from scripts or notebooks
+*.csv
+*.tsv
+*.json
+*.parquet
+*.xlsx
+
+# Cache and temp files
+.cache/
+*.tmp
+*.bak
+
+# Test-related
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+
+# Ignore secret or user-specific config
+secrets.json
+config.yaml
+config.yml
