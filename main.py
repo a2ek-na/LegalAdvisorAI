@@ -29,3 +29,8 @@ def run_search():
 
 if __name__ == "__main__":
     run_search()
+
+
+    #to run the Model
+    #-> activate environment->>> .\.venv\Scripts\activate
+    #-> to run->>> python main.py
