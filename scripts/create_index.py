@@ -37,30 +37,22 @@ def main():
     ids = [doc['id'] for doc in corpus]
 
     print(f"Initializing sentence transformer model: '{MODEL_NAME}'...")
-    print("Note: The first time this runs, it will download the model, which may take some time.")
+    #The first  it will download the model, thoda time lagega..
     try:
         model = SentenceTransformer(MODEL_NAME)
     except Exception as e:
         print(f"Error initializing SentenceTransformer model: {e}")
         sys.exit(1)
     
-    #Generate embeddings for the documents
-    print("Generating embeddings for all documents... This may take a few minutes.")
+    #Generating embeddings.....
     embeddings = model.encode(documents, show_progress_bar=True)
     print("Embeddings generated successfully.")
 
-    # Initialize and set up the ChromaDB client
-    print(f"Setting up ChromaDB persistent client at: {DB_PATH}")
-
-    # Using a persistent client to save the database to disk
+    #set up the ChromaDB at ==> DB_PATH ....
     client = chromadb.PersistentClient(path=DB_PATH)
 
-    # Create or get the collection
-    print(f"Creating or getting ChromaDB collection: '{COLLECTION_NAME}'")
+    # getting db collection from ==>COLLECTION_NAME ...
     collection = client.get_or_create_collection(name=COLLECTION_NAME)
-
-    # Add the documents, embeddings, and metadata to the collection
-    print("Adding documents to the collection...")
     
     collection.add(
         embeddings=embeddings,

@@ -23,10 +23,6 @@ def clean_text(text):
     return text
 
 def main():
-    """
-    Main function to preprocess the raw data and generate the JSON corpus.
-    """
-
     #Importing Paths.
     script_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(script_dir)
@@ -49,7 +45,6 @@ def main():
 
     print("Applying text cleaning and preprocessing...")
     df['cleaned_description'] = df['Description'].apply(clean_text)
-    
     df['Offense'] = df['Offense'].apply(clean_text)
     df['Punishment'] = df['Punishment'].apply(clean_text)
 
@@ -57,7 +52,6 @@ def main():
     df['corpus_text'] = df['cleaned_description'] + " " + df['Offense'] + " " + df['Punishment']
 
     print("Structuring data for JSON output...")
-  
     corpus_df = pd.DataFrame({
         'id': df['Section'],
         'text': df['corpus_text']

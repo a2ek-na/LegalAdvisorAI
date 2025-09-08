@@ -3,10 +3,6 @@ import sys
 import os
 
 def validate_data(df):
-    """
-    Performs basic validation on the dataframe.
-    Checks for the presence of required columns.
-    """
     print("Performing initial data validation...")
     
     required_columns = ['Description', 'Offense', 'Punishment', 'Section']
@@ -14,7 +10,6 @@ def validate_data(df):
 
     if missing_columns:
         print(f"Error: The CSV file is missing the following required columns: {missing_columns}")
-        # exiting witha non-zero status code to indicate 
         sys.exit(1)
     
     print("Validation successful: All required columns are present.")

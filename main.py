@@ -8,11 +8,12 @@ def run_search():
     # This will load the model and connect to the DB.
     try:
         search_engine = SemanticSearch()
+        #main function connection...
     except Exception as e:
         print(f"Failed to initialize the search engine: {e}")
         return
 
-    # --- Define your search query here ---
+    # Define your search input here...->
     query = "someone entered my house"
     
     results = search_engine.search(query=query, top_n=5)
@@ -21,8 +22,8 @@ def run_search():
     if results:
         for i, result in enumerate(results):
             print(f"\n{i+1}. Section ID: {result['id']}")
-            print(f"   Similarity Score (Distance): {result['distance']:.4f}")
-            print("-" * 20)
+            #print(f"   Similarity Score (Distance): {result['distance']:.4f}")
+            #print("-" * 20)
     else:
         print("No results found.")
 

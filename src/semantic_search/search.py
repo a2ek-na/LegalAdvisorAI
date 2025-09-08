@@ -8,7 +8,7 @@ class SemanticSearch:
     """
     def __init__(self):
         """
-        Initializes the cponent, loading the model and connecting to the database.
+        Initializes the compponent, loading the model and connecting to the database.
         """
 
         self.db_path = os.path.join('db_stores', 'chroma_db')
@@ -17,7 +17,7 @@ class SemanticSearch:
 
         print("Initializing Semantic Search...")
         
-        # 1. Load the Sentence Transformer model
+        #load the Sentence Transformer model
         try:
             print(f"Loading sentence transformer model: '{self.model_name}'")
             self.model = SentenceTransformer(self.model_name)
@@ -29,7 +29,9 @@ class SemanticSearch:
         try:
             print(f"Connecting to vector database at: '{self.db_path}'")
             self.client = chromadb.PersistentClient(path=self.db_path)
+            #client k ander ja k yeh wla database lao...
             self.collection = self.client.get_collection(name=self.collection_name)
+            
             print("Successfully connected to the database.")
             print(f"Total documents in collection: {self.collection.count()}")
         except Exception as e:
@@ -38,13 +40,13 @@ class SemanticSearch:
 
     def search(self, query: str, top_n: int = 5):
         """
-        Performs a semantic search for a given query.
+        Performs a semantic search.
 
-        Args:
+        it take -> 
             query (str): The user's search query.
-            top_n (int): The number of top results to return.
+            top_n (int): The number of top results to return as woh equal h 5 k..
 
-        Returns:
+        it rweturns:
             list: A list of search results, where each result is a dictionary.
         """
         if not query:
@@ -55,6 +57,7 @@ class SemanticSearch:
         query_embedding = self.model.encode(query, convert_to_tensor=False)
 
         results = self.collection.query(
+            #query_embegging transformer ka naam h...
             query_embeddings=[query_embedding.tolist()],
             n_results=top_n
         )
