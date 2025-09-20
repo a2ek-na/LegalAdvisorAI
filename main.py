@@ -1,36 +1,38 @@
-from src.semantic_search.search import SemanticSearch
-import pprint
+from src.semanticSearch.search import SemanticSearch
 
-def run_search():
+def runSearch():
     """
     Initializes the search engine and performs a sample query.
     """
-    # This will load the model and connect to the DB.
+    # Yeh model load karega aur DB se connect karega.
     try:
-        search_engine = SemanticSearch()
-        #main fAunction connection...
+        searchEngine = SemanticSearch()
+        # Main function ka connection...
     except Exception as e:
-        print(f"Failed to initialize the search engine: {e}")
+        print(f"Search engine initialize nahi ho paya: {e}")
         return
 
-    # Define your search input here...->
+    # Apna search query yahan daalo...->
     query = "My former colleague is deliberately spreading false rumors about me online to damage my professional reputation"
     
-    results = search_engine.search(query=query, top_n=5)
+    results = searchEngine.search(query=query, topN=5)
 
     print("\n--- Search Results ---")
     if results:
         for i, result in enumerate(results):
+            # Document ka text print karo
             print(f"\n{i+1}. Section ID: {result['id']}")
-            #print(f"   Similarity Score (Distance): {result['distance']:.4f}")
-            #print("-" * 20)
+            # print(f"   Document: {result['document']}")
+
+            # Neeche wali line uncomment karke similarity score dekh sakte ho
+            # print(f"   Similarity Score (Distance): {result['distance']:.4f}")
+            print("-" * 20)
     else:
-        print("No results found.")
+        print("Koi results nahi mile.")
 
 if __name__ == "__main__":
-    run_search()
+    runSearch()
 
-
-    #to run the Model
-    #-> activate environment->>> .\.venv\Scripts\activate
-    #-> to run->>> python main.py
+# --- Model run karne ke liye ---
+# -> Environment activate karo ->>> .\.venv\Scripts\activate
+# -> Run karne ke liye ->>> python main.py
