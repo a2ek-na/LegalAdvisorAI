@@ -27,7 +27,7 @@ def loadCorpus(path):
         sys.exit(1)
 
 # <--- NAYA: Embeddings manually banane ka function --->
-def generateEmbeddingsInBatches(documents, model, tokenizer, batchSize=32):
+def generateEmbeddings(documents, model, tokenizer, batchSize=32):
     """
     Generates embeddings in batches for higher efficiency.
     """
@@ -43,8 +43,13 @@ def generateEmbeddingsInBatches(documents, model, tokenizer, batchSize=32):
         batchDocs = documents[i:i + batchSize]
         
         # 1. Poore batch ko ek saath tokenize karo
+        # Example of setting an explicit, shorter max length
         encodedInput = tokenizer(
-            batchDocs, padding=True, truncation=True, return_tensors='pt'
+            batchDocs,
+            padding=True,
+            truncation=True,
+            max_length=256, # <-- You can add this parameter
+            return_tensors='pt'
         ).to(device)
         
         # 2. Model ka output lo
