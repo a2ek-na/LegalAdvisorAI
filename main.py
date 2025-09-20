@@ -2,33 +2,41 @@ from src.semanticSearch.search import SemanticSearch
 
 def runSearch():
     """
-    Initializes the search engine and performs a sample query.
+    Initializes the search engine and runs an interactive search CLI.
     """
-    # Yeh model load karega aur DB se connect karega.
+    # Yeh model load karega aur DB se connect karega (sirf ek baar).
     try:
         searchEngine = SemanticSearch()
-        # Main function ka connection...
+        print("\n--- Interactive IPC Search CLI ---")
+        print("Type your legal query below. Type 'quit' or 'exit' to stop.")
     except Exception as e:
         print(f"Search engine initialize nahi ho paya: {e}")
         return
 
-    # Apna search query yahan daalo...->
-    query = "My former colleague is deliberately spreading false rumors about me online to damage my professional reputation"
-    
-    results = searchEngine.search(query=query, topN=5)
+    # --- Interactive Search Loop ---
+    while True:
+        # User se query lo
+        query = input("\nEnter your query > ")
 
-    print("\n--- Search Results ---")
-    if results:
-        for i, result in enumerate(results):
-            # Document ka text print karo
-            print(f"\n{i+1}. Section ID: {result['id']}")
-            # print(f"   Document: {result['document']}")
+        # Exit karne ka condition check karo
+        if query.lower() in ['quit', 'exit']:
+            print("Exiting the search. Goodbye!")
+            break
+        
+        # Agar query khali hai toh continue karo
+        if not query.strip():
+            continue
 
-            # Neeche wali line uncomment karke similarity score dekh sakte ho
-            # print(f"   Similarity Score (Distance): {result['distance']:.4f}")
-            print("-" * 20)
-    else:
-        print("Koi results nahi mile.")
+        # Search perform karo
+        results = searchEngine.search(query=query, topN=5)
+
+        # Results print karo
+        if results:
+            print("\nFound matching IPC sections:")
+            for result in results:
+                print(f"- Section {result['id']}")
+        else:
+            print("Koi results nahi mile.")
 
 if __name__ == "__main__":
     runSearch()
