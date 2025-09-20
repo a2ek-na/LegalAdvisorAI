@@ -8,13 +8,13 @@ def run_search():
     # This will load the model and connect to the DB.
     try:
         search_engine = SemanticSearch()
-        #main function connection...
+        #main fAunction connection...
     except Exception as e:
         print(f"Failed to initialize the search engine: {e}")
         return
 
     # Define your search input here...->
-    query = "someone entered my house"
+    query = "My former colleague is deliberately spreading false rumors about me online to damage my professional reputation"
     
     results = search_engine.search(query=query, top_n=5)
 

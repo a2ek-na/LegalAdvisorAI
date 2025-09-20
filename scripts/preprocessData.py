@@ -4,7 +4,7 @@ import re
 import json
 import sys
 
-def clean_text(text):
+def cleanText(text):
     """
     Applies a sequence of cleaning operations to the input text.
     1. Converts to lowercase.
@@ -24,17 +24,18 @@ def clean_text(text):
 
 def main():
     #Importing Paths.
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    raw_data_path = os.path.join(project_root, 'data', 'raw', 'ipc_sections.csv')
-    processed_data_path = os.path.join(project_root, 'data', 'processed')
-    output_json_path = os.path.join(processed_data_path, 'ipc_corpus.json')
+    scriptDir = os.path.dirname(os.path.abspath(__file__))
+    # __file__ -> name of the Root Folder
+    projectRoot = os.path.dirname(scriptDir)
+    rawDataPath = os.path.join(projectRoot, 'data', 'raw', 'ipc_sections.csv')
+    processedDataPath = os.path.join(projectRoot, 'data', 'processed')
+    outputJsonPath = os.path.join(processedDataPath, 'ipc_corpus.json')
 
-    print(f"Loading raw data from: {raw_data_path}")
+    print(f"Loading raw data from: {rawDataPath}")
     try:
-        df = pd.read_csv(raw_data_path)
+        df = pd.read_csv(rawDataPath)
     except FileNotFoundError:
-        print(f"Error: Raw data file not found at {raw_data_path}")
+        print(f"Error: Raw data file not found at {rawDataPath}")
         sys.exit(1)
 
     # NEW STEP: Remove Duplicate Sections ---
@@ -44,12 +45,12 @@ def main():
 
 
     print("Applying text cleaning and preprocessing...")
-    df['cleaned_description'] = df['Description'].apply(clean_text)
-    df['Offense'] = df['Offense'].apply(clean_text)
-    df['Punishment'] = df['Punishment'].apply(clean_text)
+    df['cleaned_description'] = df['Description'].apply(cleanText)
+    df['Offense'] = df['Offense'].apply(cleanText)
+    # df['Punishment'] = df['Punishment'].apply(cleanText)
 
     print("Combining text fields to create the corpus...")
-    df['corpus_text'] = df['cleaned_description'] + " " + df['Offense'] + " " + df['Punishment']
+    df['corpus_text'] = df['cleaned_description'] + " " + df['Offense']
 
     print("Structuring data for JSON output...")
     corpus_df = pd.DataFrame({
@@ -59,11 +60,11 @@ def main():
 
     corpus_list = corpus_df.to_dict(orient='records')
 
-    os.makedirs(processed_data_path, exist_ok=True)
+    os.makedirs(processedDataPath, exist_ok=True)
     
-    print(f"Saving processed corpus to: {output_json_path}")
+    print(f"Saving processed corpus to: {outputJsonPath}")
     try:
-        with open(output_json_path, 'w', encoding='utf-8') as f:
+        with open(outputJsonPath, 'w', encoding='utf-8') as f:
             json.dump(corpus_list, f, indent=4, ensure_ascii=False)
         print("Successfully created 'ipc_corpus.json'.")
         print(f"Total records processed: {len(corpus_list)}")
